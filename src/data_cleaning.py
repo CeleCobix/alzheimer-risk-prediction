@@ -1,9 +1,9 @@
 import pandas as pd
 
-alzheimer_data = pd.read_csv('data/raw/alzheimers_disease_data.csv')
+def load_data(filepath: str) -> pd.DataFrame:
+    return pd.read_csv(filepath)
 
-print(alzheimer_data.head())
-
-alzheimer_data_clean = alzheimer_data.drop(columns=['PatientID','DoctorInCharge'])
-
-alzheimer_data_clean.to_csv("data/processed/alzheimers_disease_data.csv", encoding= "utf-8", index=False)
+def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+    cols_to_drop = ['PatientID', 'DoctorInCharge']
+    df_clean = df.drop(columns=[col for col in cols_to_drop if col in df.columns])
+    return df_clean
