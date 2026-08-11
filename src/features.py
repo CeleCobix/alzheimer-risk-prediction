@@ -11,11 +11,13 @@ NUMERIC_COLUMNS = [
 def encode_categorical(df: pd.DataFrame) -> pd.DataFrame:
     return pd.get_dummies(df, columns=['Ethnicity'], dtype=int)
 
-def scale_numeric_features(df: pd.DataFrame, columns: list = NUMERIC_COLUMNS) -> pd.DataFrame:
+def scale_numeric_features(df_train: pd.DataFrame, df_test: pd.DataFrame, columns: list = NUMERIC_COLUMNS):
     scaler = StandardScaler()
-    df_scaled = df.copy()
-    df_scaled[columns] = scaler.fit_transform(df_scaled[columns])
-    return df_scaled
+    df_train_scaled = df_train.copy()
+    df_test_scaled = df_test.copy()
+    df_train_scaled[columns] = scaler.fit_transform(df_train[columns])
+    df_test_scaled[columns] = scaler.transform(df_test[columns])
+    return df_train_scaled, df_test_scaled, scaler
 
 def split_features_target(df: pd.DataFrame, target_col: str = 'Diagnosis'):
     y = df[target_col]
